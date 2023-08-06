@@ -1,6 +1,8 @@
 <?php
 
 
+use App\Http\Controllers\ListingController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Listing;
@@ -16,19 +18,30 @@ use App\Models\Listing;
 |
 */
 
-Route::get('/', function () {
-    return view('pages/listings', [
-        'heading' => 'Latest Listing',
-        'listings' => Listing::all()
-    ]);
-});
-
-
-Route::get('/listing/{id}', function ($id) {
-    return view('pages/listing', [
-        'listings' => Listing::find($id)
-    ]);
-});
+/*All View*/
+Route::get('/', [ListingController::class, 'index']);
+/* Show Create Form*/
+Route::get('/listings/create', [ListingController::class, 'create']);
+/*Store data*/
+Route::post('/listings', [ListingController::class, 'store']);
+/*Single View*/
+Route::get('/listing/{listing}', [ListingController::class, 'show']);
+/*Show Edit Form*/
+Route::get('/listings/{listing}/edit', [ListingController::class, 'edit']);
+/*Submit Edit Form*/
+Route::put('/listings/{listing}', [ListingController::class, 'update']);
+/*Delete Data*/
+Route::delete('/listing/{listing}', [ListingController::class, 'destroy']);
+/*Show Register Create Form*/
+Route::get('/register', [UserController::class, 'create']);
+/*Submit New Register Create Form*/
+Route::post('/users', [UserController::class, 'store']);
+/*Logout*/
+Route::post('/logout', [UserController::class, 'logout']);
+/*Login Form*/
+Route::get('/login', [UserController::class, 'login']);
+/*Login Submit*/
+Route::post('/users/authenticate', [UserController::class, 'authenticate']);
 
 
 //Route::get('/users/{id}/{name}', function ($id, $name) {
@@ -40,7 +53,7 @@ Route::get('/listing/{id}', function ($id) {
 
 
 //Route::get('/about', function () {
-//    return view('pages.about');
+//    return view('listings.about');
 //});
 //
 //Route::get('/posts/{id}', function ($id) {
